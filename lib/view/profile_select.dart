@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ProfileSelectPage extends StatelessWidget {
   const ProfileSelectPage({super.key});
 
-  Widget _buildProfile(BuildContext context, String name) {
+  Widget _buildProfile(BuildContext context, String name, String imagePath) {
     return GestureDetector(
       onTap: () {
         // When a profile is tapped, navigate to the home screen (replace stack)
@@ -16,8 +16,10 @@ class ProfileSelectPage extends StatelessWidget {
           Container(
             width: 120,
             height: 120,
-            color: Colors.grey[800],
-            child: const Center(child: Icon(Icons.person, color: Colors.white70, size: 56)),
+            decoration: BoxDecoration(
+              color: Colors.grey[800],
+              image: DecorationImage(image: AssetImage(imagePath), fit: BoxFit.cover),
+            ),
           ),
           const SizedBox(height: 8),
           Text(name, style: const TextStyle(color: Colors.white)),
@@ -46,7 +48,12 @@ class ProfileSelectPage extends StatelessWidget {
                     alignment: WrapAlignment.center,
                     spacing: 32,
                     runSpacing: 24,
-                    children: [_buildProfile(context, 'bu'), _buildProfile(context, 'nini'), _buildProfile(context, 'nidhi'), _buildProfile(context, 'chimu')],
+                    children: [
+                      _buildProfile(context, 'Bub', 'assets/nidhi/profile/2.jpg'),
+                      _buildProfile(context, 'nini', 'assets/nidhi/profile/3.jpg'),
+                      _buildProfile(context, 'nidhi', 'assets/nidhi/profile/4.jpg'),
+                      _buildProfile(context, 'chimu', 'assets/nidhi/profile/5.jpg'),
+                    ],
                   ),
 
                   const SizedBox(height: 32),

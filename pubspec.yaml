@@ -71,6 +71,7 @@ flutter:
     - assets/nidhi/row1/
     - assets/nidhi/row2/
     - assets/nidhi/row3/
+    - assets/nidhi/profile/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
