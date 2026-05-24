@@ -1,0 +1,189 @@
+Create a Netflix-style home screen UI which comes after clicking on any of profile that matches the netflix as closely as possible in layout, spacing, hierarchy, animations, gradients, hover effects, typography feel, and cinematic styling.
+The app should feel premium, modern, immersive, and production-ready.
+
+Core Requirements:
+
+1. Overall Layout
+
+- Fullscreen dark cinematic background.
+- Transparent top navbar overlay.
+- Large hero/banner section at the top.
+- Horizontally scrollable movie rows below.
+- Smooth animations and transitions.
+- Responsive for TV, tablet, web, and mobile.
+
+2. Navbar
+   Include:
+
+- Netflix-style logo on left.
+- Menu items:
+  - Home
+  - TV Shows
+  - Movies
+  - New & Popular
+  - My List
+  - Browse by Languages
+
+- Subtle hover animations.
+- Navbar should slightly darken on scroll.
+
+3. Hero / Featured Section
+   The top featured content must:
+
+- Play a background video automatically.
+- Support mute/unmute.
+- Have a dark cinematic gradient overlay.
+- Display:
+  - Movie logo/title image
+  - Rank badge (#1 in TV Shows Today)
+  - Description text
+  - Play button
+  - More Info button
+
+- Background video should smoothly loop.
+- Add fade-in animation on page load.
+
+IMPORTANT:
+The hero/banner content MUST NOT be hardcoded.
+
+It should come dynamically from a centralized “source of truth” configuration file.
+
+4. Source of Truth Architecture
+   Create a dedicated data layer/file where all movie/show metadata lives.
+
+Example:
+
+- movies.json
+  OR
+- content_data.dart
+  OR
+- contentRepository.ts
+
+This file should contain:
+
+- id
+- title
+- description
+- thumbnail image
+- background banner image
+- preview video URL/path
+- categories
+- ranking
+- genres
+- maturity rating
+- year
+- duration
+- featured flag
+- autoplay flag
+
+Example structure:
+
+```json
+{
+  "featured": {
+    "title": "Devil in Ohio",
+    "description": "Determined to protect a young patient...",
+    "thumbnail": "assets/images/devil_thumbnail.jpg",
+    "bannerImage": "assets/images/devil_banner.jpg",
+    "previewVideo": "assets/videos/devil_preview.mp4",
+    "topRank": "#1 in TV Shows Today",
+    "autoplay": true
+  },
+  "popular": [
+    {
+      "title": "Locke & Key",
+      "thumbnail": "assets/images/locke_key.jpg"
+    }
+  ]
+}
+```
+
+The UI must read EVERYTHING dynamically from this file:
+
+- Hero section
+- Thumbnails
+- Titles
+- Descriptions
+- Categories
+- Video previews
+- Rows
+
+So later I can just:
+
+- Add a new movie object
+- Replace image paths
+- Replace video paths
+
+Without touching UI code.
+
+5. Movie Rows
+   Create reusable Netflix-style content rows:
+
+- “Popular on Netflix”
+- “Trending Now”
+- “Top Picks”
+- etc.
+
+Each row should:
+
+- Be horizontally scrollable.
+- Have hover scale animation.
+- Show subtle shadow/glow on hover.
+- Support lazy loading if possible.
+
+6. Architecture
+   Use clean scalable architecture:
+
+- Components/widgets separated properly.
+- Reusable movie card component.
+- Reusable hero banner component.
+- Centralized constants/theme.
+- Proper folder structure.
+
+Suggested structure:
+
+```txt
+src/
+ ├── components/
+ ├── widgets/
+ ├── data/
+ ├── models/
+ ├── screens/
+ ├── assets/
+ └── theme/
+```
+
+7. Styling Details
+
+- Cinematic gradients.
+- Deep blacks and dark overlays.
+- Slight blur effects.
+- Smooth easing animations.
+- Netflix-inspired typography hierarchy.
+- Proper spacing and alignment exactly like reference.
+
+8. Extra Features
+   Add:
+
+- Auto-playing trailer on hover for thumbnails (optional).
+- Smooth snapping horizontal scroll.
+- Skeleton loading shimmer.
+- Continue Watching section.
+- Animated transitions between sections.
+
+9. Performance
+
+- Optimize image loading.
+- Avoid unnecessary re-renders.
+- Use caching where possible.
+- Keep animations smooth at 60fps.
+
+10. Final Goal
+    The final UI should feel almost identical to Netflix’s real homepage:
+
+- Same cinematic feel
+- Same spacing rhythm
+- Same content hierarchy
+- Same immersive browsing experience
+
+But with fully dynamic data driven from a single source-of-truth file for all movies, images, thumbnails, descriptions, and preview videos.
