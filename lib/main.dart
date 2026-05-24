@@ -10,7 +10,7 @@ import 'utils/web_refresh.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  usePathUrlStrategy();
+
   if (kIsWeb) {
     setupRefreshRedirect();
   }
@@ -23,13 +23,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // if (kIsWeb) {
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     if (Uri.base.path != '/') {
-    //       Navigator.of(navigatorKey.currentContext!).pushNamedAndRemoveUntil('/', (route) => false);
-    //     }
-    //   });
-    // }
+    if (kIsWeb) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (Uri.base.path != '/') {
+          Navigator.of(navigatorKey.currentContext!).pushNamedAndRemoveUntil('/', (route) => false);
+        }
+      });
+    }
     return MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
