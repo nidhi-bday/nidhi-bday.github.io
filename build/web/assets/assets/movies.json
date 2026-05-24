@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1",
+    "title": "Midnight Run",
+    "description": "A slick, witty dramedy about late-night adventures and complicated friendships.",
+    "thumbnail": "https://images.unsplash.com/photo-1517604931442-3395b1fbd6de?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=000000",
+    "bannerImage": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=000000",
+    "previewVideo": "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4",
+    "categories": ["Slick", "Witty", "Dramedy"],
+    "maturity": "U/A 16+",
+    "seasons": "9 Seasons",
+    "badges": ["HD"],
+    "year": 2022,
+    "duration": "45m"
+  }
+]
