@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
@@ -168,7 +169,7 @@ class _HoverCardContentState extends State<_HoverCardContent> with SingleTickerP
           final t = Curves.easeOut.transform(_anim.value);
           final rect = Rect.lerp(widget.sourceRect, widget.targetRect, t)!;
           final border = BorderRadius.circular(lerpDouble(6, radius, t)!);
-
+          log('image path ${widget.item.bannerImage} and ${widget.item.thumbnail}');
           return Stack(
             children: [
               // dim background progressively
@@ -198,18 +199,10 @@ class _HoverCardContentState extends State<_HoverCardContent> with SingleTickerP
                               )
                             : (widget.item.bannerImage.isNotEmpty
                                   ? ClipRect(
-                                      child: SizedBox(
-                                        width: rect.width,
-                                        height: rect.height * 0.68,
-                                        child: Image.network(widget.item.bannerImage, fit: BoxFit.contain, width: double.infinity, height: double.infinity),
-                                      ),
+                                      child: SizedBox(width: rect.width, height: rect.height * 0.68, child: _buildImage(widget.item.bannerImage)),
                                     )
                                   : ClipRect(
-                                      child: SizedBox(
-                                        width: rect.width,
-                                        height: rect.height * 0.68,
-                                        child: Image.network(widget.item.thumbnail, fit: BoxFit.contain, width: double.infinity, height: double.infinity),
-                                      ),
+                                      child: SizedBox(width: rect.width, height: rect.height * 0.68, child: _buildImage(widget.item.thumbnail)),
                                     )),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(radius),
@@ -245,66 +238,6 @@ class _HoverCardContentState extends State<_HoverCardContent> with SingleTickerP
             ],
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildHero(BuildContext context) {
-    final height = 140.0;
-    final video = widget.videoController;
-
-    return SizedBox(
-      height: height,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          // banner image
-          // if (widget.item.bannerImage.isNotEmpty)
-          //   TweenAnimationBuilder<double>(
-          //     duration: const Duration(milliseconds: 800),
-          //     tween: Tween(begin: 0.0, end: 1.0),
-          //     builder: (context, v, child) => Transform.translate(offset: Offset(0, -6 * (1 - v)), child: child),
-          //     child: Image.network(widget.item.bannerImage, fit: BoxFit.fitWidth),
-          //   ),
-
-          // video preview with subtle parallax
-          // if (video != null && video.value.isInitialized)
-          //   AnimatedOpacity(
-          //     opacity: 1.0,
-          //     duration: const Duration(milliseconds: 350),
-          //     child: Transform.translate(
-          //       offset: const Offset(0, -4),
-          //       child: FittedBox(
-          //         fit: BoxFit.cover,
-          //         child: SizedBox(width: video.value.size.width, height: video.value.size.height, child: VideoPlayer(video)),
-          //       ),
-          //     ),
-          //   ),
-
-          // gradient overlay for readability
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: 72,
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.transparent, Colors.black87]),
-              ),
-            ),
-          ),
-
-          // mute icon
-          Positioned(
-            right: 8,
-            bottom: 8,
-            child: Container(
-              decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(20)),
-              padding: const EdgeInsets.all(6),
-              child: const Icon(Icons.volume_off, color: Colors.white70, size: 18),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -378,5 +311,15 @@ class _HoverCardContentState extends State<_HoverCardContent> with SingleTickerP
   Widget _buildGenres() {
     final genres = widget.item.categories.join(' • ');
     return Text(genres, style: const TextStyle(color: Colors.white60, fontSize: 12));
+  }
+
+  Widget _buildImage(String src) {
+    final isRemote = src.startsWith('http://') || src.startsWith('https://');
+    if (isRemote) {
+      return Image.network(src, fit: BoxFit.contain, width: double.infinity, height: double.infinity);
+    }
+
+    // Treat as bundled asset
+    return Image.asset(src, fit: BoxFit.contain, width: double.infinity, height: double.infinity);
   }
 }
