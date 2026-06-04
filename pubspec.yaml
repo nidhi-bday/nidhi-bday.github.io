@@ -39,6 +39,7 @@ dependencies:
   video_player: ^2.11.1
   flutter_svg: ^2.3.0
   google_fonts: ^8.1.0
+  carousel_slider: ^5.1.2
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,7 @@ flutter:
     - assets/nidhi/row2/
     - assets/nidhi/row3/
     - assets/nidhi/profile/
+    - assets/nidhi/messages/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

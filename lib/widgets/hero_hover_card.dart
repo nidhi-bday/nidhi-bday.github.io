@@ -125,7 +125,7 @@ class _HoverCardContent extends StatefulWidget {
   final Rect? sourceRect;
   final Rect? targetRect;
 
-  const _HoverCardContent({super.key, required this.item, this.videoController, required this.onClose, this.onHoverChanged, this.sourceRect, this.targetRect});
+  const _HoverCardContent({required this.item, this.videoController, required this.onClose, this.onHoverChanged, this.sourceRect, this.targetRect});
 
   @override
   State<_HoverCardContent> createState() => _HoverCardContentState();

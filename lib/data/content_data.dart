@@ -1,3 +1,5 @@
+import 'package:birthday_website/models/birthday_message.dart';
+
 import '../models/content_item.dart';
 
 class ContentData {
@@ -67,6 +69,56 @@ class ContentData {
 
   static Map<String, List<ContentItem>> rows = {'Popular on App': popular, 'Trending Now': trending, 'You Might Like': suggested};
 }
+
+final List<BirthdayMessage> messages = [
+  BirthdayMessage(
+    image: "assets/nidhi/messages/vidhi.jpeg",
+    name: "Vidhi",
+    message:
+        "You’re younger than me, but somehow you protected me like an elder sister. You held my heart together on days I was falling apart.You became my every mood, every safe place, every tiny piece of happiness. I just pray I become successful enough to give my little queen the whole world one day.",
+  ),
+  BirthdayMessage(
+    image: "assets/nidhi/messages/sidd.jpeg",
+    name: "Siddhant",
+    // relation: "Best Friend ❤️",
+    message:
+        "Cheers to your 22nd Ni Happiest Birthday.You’ve truly been the most beautiful thing to ever happen in my life. The way you’ve cared for me, protected me, and loved me filled a space I never thought anyone could. Because of you, I never really felt the absence of a mother’s love you gave me that warmth in your own way. No matter where life takes us, I’ll never forget the basketball court, S Kumar cha table, and all the little moments that became my safest memories because you were there. And Auggie would be so so proud of the person you’ve become. 💕🐾",
+  ),
+  BirthdayMessage(
+    image: "assets/nidhi/messages/komo.jpeg",
+    name: "komolika",
+    // relation: "Best Friend ❤️",
+    message:
+        "Hi nidhi I love you You r the stoopidest yet the most loving friend Too much to say m a big yapper But i will stick to I AM VERY PROUD OF YOU and i am always there for you whatever you choose whatever you do in your life i will be theree for you \nXoxo \nI loveee uh",
+  ),
+  BirthdayMessage(
+    image: "assets/nidhi/messages/tanvi.jpeg",
+    name: "Tanvi",
+    // relation: "Best Friend ❤️",
+    message:
+        "Hey nidhuu we might not meet every day because of our schedules, but one look at each other is all it takes to understand everything. Cheers to all our childhood memories and the unbreakable bond we share. Love you so much, Bebe! ",
+  ),
+  BirthdayMessage(
+    image: "assets/nidhi/messages/balaji.jpeg",
+    name: "Balaji",
+    // relation: "Best Friend ❤️",
+    message:
+        "Happy birthday to my absolute favorite human Life is infinitely brighter, funnier, and more beautiful with you in it Thank you for always being my person. I hope your day is as incredible as your heart is",
+  ),
+  BirthdayMessage(
+    image: "assets/nidhi/messages/divya.jpeg",
+    name: "Divya",
+    // relation: "Sister 💕",
+    message:
+        "Happy Birthday to my favorite person to spend break time with 😂🤍 From nonstop gossip and laughing at the dumbest things to hanging out all the time, life at work would honestly be so boring without you. And yes, when we don’t have the same shift, my mood is automatically ruined Thank you for being my comfort person and best friend. I hope this year brings you lots of happiness, success, good food, and less stressful shifts 😂🎂✨",
+  ),
+  BirthdayMessage(
+    image: "assets/nidhi/messages/mansi.jpeg",
+    name: "Mansi",
+    message:
+        "happpyy birthday nidhhii. I'm glad that you came into my life and I'm so grateful for your friendship. Many more trips to come with you guyssss.... I don't care whatever other people say about our friendship ( trio)  I know that our friendship lasts as far as sun rises. Don't give resign soon! For the very first time I love something about indigo because Indigo gives me such a sweetest friend. No matter the situation will be I am always there for you. Lots of loveee 💕",
+  ),
+];
 
 // import '../models/content_item.dart';
 

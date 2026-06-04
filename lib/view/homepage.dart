@@ -1,3 +1,4 @@
+import 'package:birthday_website/widgets/message_carousel.dart';
 import 'package:flutter/material.dart';
 import '../data/content_data.dart';
 import '../widgets/hero_banner.dart';
@@ -39,6 +40,20 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   HeroBanner(item: ContentData.featured),
                   const SizedBox(height: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          "From Loved Ones",
+                          style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+
+                      BirthdayMessagesCarousel(messages: messages),
+                    ],
+                  ),
                   for (final entry in ContentData.rows.entries) MovieRow(title: entry.key, items: entry.value),
                   const SizedBox(height: 36),
                 ],
