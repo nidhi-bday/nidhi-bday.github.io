@@ -27,7 +27,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
               final isMobile = MediaQuery.of(context).size.width < 600;
               return Row(
                 children: [
-                  SvgPicture.asset(isMobile ? 'assets/Netflix_2016_N_logo.svg' : 'assets/netflix_logo.svg', height: 22, placeholderBuilder: (context) => const SizedBox(width: 22, height: 22)),
+                  SvgPicture.asset(isMobile ? 'assets/netflix_n.jpg' : 'assets/netflix_logo.jpg', height: 22),
                   const SizedBox(width: 14),
                   if (isMobile) ...[
                     const _NavItem(label: 'Discover', isSelected: true),

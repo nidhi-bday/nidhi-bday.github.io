@@ -68,7 +68,7 @@ class _BirthdayMessageCardState extends State<BirthdayMessageCard> with SingleTi
         child: MouseRegion(
           onEnter: (_) => _handleHover(true),
           onExit: (_) => _handleHover(false),
-          child: GestureDetector(
+          child: InkWell(
             onTap: _handleTap,
             child: AnimatedBuilder(
               animation: _anim,
@@ -110,7 +110,7 @@ class _BirthdayMessageCardState extends State<BirthdayMessageCard> with SingleTi
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.asset(widget.data.image, fit: BoxFit.cover),
+        Image.asset(widget.data.image, fit: BoxFit.fitHeight),
 
         Container(
           decoration: BoxDecoration(
@@ -139,7 +139,7 @@ class _BirthdayMessageCardState extends State<BirthdayMessageCard> with SingleTi
                   children: [
                     Text(
                       widget.data.name,
-                      style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width < 600 ? 12 : 15, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -152,6 +152,7 @@ class _BirthdayMessageCardState extends State<BirthdayMessageCard> with SingleTi
   }
 
   Widget _buildBack() {
+    final ScrollController _scrollController = ScrollController();
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -177,17 +178,24 @@ class _BirthdayMessageCardState extends State<BirthdayMessageCard> with SingleTi
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: Colors.white.withOpacity(.08)),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.data.name,
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(widget.data.message, style: const TextStyle(color: Colors.white70, fontSize: 14)),
-                  ],
+                child: Scrollbar(
+                  controller: _scrollController,
+                  thumbVisibility: true,
+                  child: ListView(
+                    controller: _scrollController,
+                    physics: const ClampingScrollPhysics(),
+                    children: [
+                      Text(
+                        widget.data.name,
+                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        widget.data.message,
+                        style: TextStyle(color: Colors.white70, fontSize: MediaQuery.of(context).size.width < 600 ? 12 : 16),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

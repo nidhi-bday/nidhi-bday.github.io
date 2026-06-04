@@ -19,6 +19,8 @@ class _BirthdayMessagesCarouselState extends State<BirthdayMessagesCarousel> {
 
   late final CarouselSliderController controller;
   Timer? timer;
+  bool scrollingEnabled = true;
+  bool _shownScrollDisabledSnack = false;
 
   @override
   void initState() {
@@ -57,38 +59,53 @@ class _BirthdayMessagesCarouselState extends State<BirthdayMessagesCarousel> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 550,
-      child: CarouselSlider.builder(
-        carouselController: controller,
-        itemCount: widget.messages.length,
-        options: CarouselOptions(
-          height: 500,
-          viewportFraction: 0.3,
-          enlargeCenterPage: true,
-          enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+      height: 600,
+      child: GestureDetector(
+        onHorizontalDragStart: (_) {
+          if (!scrollingEnabled && !_shownScrollDisabledSnack) {
+            _shownScrollDisabledSnack = true;
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(behavior: SnackBarBehavior.floating, content: Text('Flip the card to re-enable scrolling'), duration: Duration(seconds: 2)));
+          }
+        },
+        child: CarouselSlider.builder(
+          carouselController: controller,
+          itemCount: widget.messages.length,
+          options: CarouselOptions(
+            height: 600,
+            viewportFraction: MediaQuery.of(context).size.width < 600 ? 0.6 : 0.2,
+            enlargeCenterPage: true,
+            enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+            scrollPhysics: scrollingEnabled ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
+            enlargeFactor: 0.2,
+            onPageChanged: (index, reason) {
+              setState(() {
+                current = index;
+              });
+            },
+          ),
+          itemBuilder: (context, index, realIndex) {
+            final isActive = index == current;
 
-          enlargeFactor: 0.2,
-          onPageChanged: (index, reason) {
-            setState(() {
-              current = index;
-            });
+            return BirthdayMessageCard(
+              data: widget.messages[index],
+              isActive: isActive,
+              onFlip: (flipped) {
+                // Heuristic: treat devices with a small shortestSide as touch/no-mouse.
+                final isTouchDevice = MediaQuery.of(context).size.shortestSide < 600;
+                if (flipped && isTouchDevice) {
+                  _stopTimer();
+                  setState(() => scrollingEnabled = false);
+                } else if (!flipped && isTouchDevice) {
+                  _startTimer();
+                  setState(() {
+                    scrollingEnabled = true;
+                    _shownScrollDisabledSnack = false;
+                  });
+                }
+              },
+            );
           },
         ),
-        itemBuilder: (context, index, realIndex) {
-          final isActive = index == current;
-
-          return BirthdayMessageCard(
-            data: widget.messages[index],
-            isActive: isActive,
-            onFlip: (flipped) {
-              if (flipped) {
-                _stopTimer();
-              } else {
-                _startTimer();
-              }
-            },
-          );
-        },
       ),
     );
   }

@@ -64,8 +64,6 @@ flutter:
 
   assets:
     - assets/intro.mp4
-    - assets/netflix_logo.svg
-    - assets/Netflix_2016_N_logo.png
     - assets/
     - assets/nidhi/
     - assets/nidhi/featured/

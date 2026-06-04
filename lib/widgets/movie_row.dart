@@ -112,8 +112,11 @@ class _MovieRowState extends State<MovieRow> {
                             onPointerSignal: (event) {
                               // Convert vertical wheel scroll into horizontal movement on desktop
                               if (event is PointerScrollEvent && !isMobile) {
+                                if (!_scrollController.hasClients) return;
                                 final delta = event.scrollDelta.dy;
-                                _scrollController.jumpTo((_scrollController.position.pixels + delta).clamp(0.0, _maxScroll));
+                                final current = _scrollController.position.pixels;
+                                final max = _scrollController.position.maxScrollExtent;
+                                _scrollController.jumpTo((current + delta).clamp(0.0, max));
                               }
                             },
                             child: ListView.builder(

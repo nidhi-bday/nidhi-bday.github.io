@@ -36,7 +36,7 @@ class ProfileSelectPage extends StatelessWidget {
         child: Stack(
           children: [
             // Top-left Netflix logo
-            Positioned(left: 16, top: 16, child: SvgPicture.asset('assets/netflix_logo.svg', width: 150)),
+            Positioned(left: 16, top: 16, child: SvgPicture.asset('assets/netflix_logo.jpg', width: 150)),
 
             // Center content
             Center(
