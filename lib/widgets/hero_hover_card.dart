@@ -152,164 +152,99 @@ class _HoverCardContentState extends State<_HoverCardContent> with SingleTickerP
     final radius = 10.0;
 
     // If both source/target rects are provided, run a shared-element transition
-    final inTransition = widget.sourceRect != null && widget.targetRect != null && _anim.value < 0.98;
-    if (inTransition) {
-      return Positioned.fill(
-        child: Listener(
-          onPointerHover: (ev) {
-            // If pointer moves over the target rect, report hover; if not, don't close yet until transition finishes
-            if (widget.targetRect != null) {
-              final inside = widget.targetRect!.contains(ev.position);
-              widget.onHoverChanged?.call(inside);
-            }
-          },
-          child: AnimatedBuilder(
-            animation: _anim,
-            builder: (context, child) {
-              final t = Curves.easeOut.transform(_anim.value);
-              final rect = Rect.lerp(widget.sourceRect, widget.targetRect, t)!;
-              final border = BorderRadius.circular(lerpDouble(6, radius, t)!);
-
-              return Stack(
-                children: [
-                  // dim background progressively
-                  GestureDetector(
-                    onTap: widget.onClose,
-                    child: Container(color: Colors.black.withOpacity(0.25 * t)),
-                  ),
-                  Positioned.fromRect(
-                    rect: rect,
-                    child: ClipRRect(
-                      borderRadius: border,
-                      child: Container(
-                        width: widget.targetRect?.width,
-                        color: Colors.black,
-                        child: Column(
-                          children: [
-                            widget.videoController != null && widget.videoController!.value.isInitialized
-                                ? FittedBox(
-                                    fit: BoxFit.cover,
-                                    child: SizedBox(width: widget.videoController!.value.size.width, height: widget.videoController!.value.size.height, child: VideoPlayer(widget.videoController!)),
-                                  )
-                                : (widget.item.bannerImage.isNotEmpty ? Image.network(widget.item.bannerImage, fit: BoxFit.cover) : Image.network(widget.item.thumbnail, fit: BoxFit.cover)),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(radius),
-                              child: BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.82),
-                                    borderRadius: BorderRadius.circular(radius),
-                                    border: Border.all(color: Colors.white12, width: 0.3),
-                                  ),
-                                  padding: const EdgeInsets.all(12),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      // Action row
-                                      _buildActions(),
-                                      const SizedBox(height: 5),
-                                      // Metadata
-                                      _buildMetadata(),
-
-                                      // Genres
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-      );
-    }
-
-    // Otherwise show the full overlay content (post-transition or modal fallback)
+    // final inTransition = widget.sourceRect != null && widget.targetRect != null && _anim.value < 0.98;
+    // if (inTransition) {
     return Listener(
       onPointerHover: (ev) {
-        // If the popup has a targetRect, consider pointer inside when within it
+        // If pointer moves over the target rect, report hover; if not, don't close yet until transition finishes
         if (widget.targetRect != null) {
           final inside = widget.targetRect!.contains(ev.position);
           widget.onHoverChanged?.call(inside);
         }
       },
-      onPointerCancel: (ev) => widget.onHoverChanged?.call(false),
-      child: MouseRegion(
-        onEnter: (_) => widget.onHoverChanged?.call(true),
-        onExit: (_) => widget.onHoverChanged?.call(false),
-        child: FadeTransition(
-          opacity: CurvedAnimation(parent: _anim, curve: Curves.easeOut),
-          child: ScaleTransition(
-            scale: Tween<double>(begin: 0.96, end: 1.0).animate(CurvedAnimation(parent: _anim, curve: Curves.elasticOut)),
-            child: Material(
-              color: Colors.transparent,
-              child: Stack(
-                children: [
-                  // ambient glow
-                  Positioned.fill(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(radius),
-                        boxShadow: [
-                          BoxShadow(color: Colors.black.withOpacity(0.6), blurRadius: 40, spreadRadius: 4),
-                          BoxShadow(color: Colors.deepPurple.withOpacity(0.07), blurRadius: 60, spreadRadius: 20),
-                        ],
-                      ),
-                    ),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(radius),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.82),
-                          borderRadius: BorderRadius.circular(radius),
-                          border: Border.all(color: Colors.white12, width: 0.3),
-                        ),
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Top hero section
-                            _buildHero(context),
-                            const SizedBox(height: 10),
-                            // Action row
-                            _buildActions(),
-                            const SizedBox(height: 8),
-                            // Metadata
-                            _buildMetadata(),
-                            const SizedBox(height: 6),
-                            // Genres
-                            _buildGenres(),
-                            const SizedBox(height: 8),
-                            // Description
-                            Text(
-                              widget.item.description,
-                              style: const TextStyle(color: Colors.white70, fontSize: 12),
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  // close area (when mouse leaves the overlay, close after a small delay)
-                ],
+      child: AnimatedBuilder(
+        animation: _anim,
+        builder: (context, child) {
+          final t = Curves.easeOut.transform(_anim.value);
+          final rect = Rect.lerp(widget.sourceRect, widget.targetRect, t)!;
+          final border = BorderRadius.circular(lerpDouble(6, radius, t)!);
+
+          return Stack(
+            children: [
+              // dim background progressively
+              GestureDetector(
+                onTap: widget.onClose,
+                child: Container(color: Colors.black.withOpacity(0.25 * t)),
               ),
-            ),
-          ),
-        ),
+              Positioned.fromRect(
+                rect: rect,
+                child: ClipRRect(
+                  borderRadius: border,
+                  child: Container(
+                    width: widget.targetRect?.width,
+                    color: Colors.black,
+                    child: Column(
+                      children: [
+                        widget.videoController != null && widget.videoController!.value.isInitialized
+                            ? ClipRect(
+                                child: SizedBox(
+                                  width: rect.width,
+                                  height: rect.height * 0.68,
+                                  child: FittedBox(
+                                    fit: BoxFit.contain,
+                                    child: SizedBox(width: widget.videoController!.value.size.width, height: widget.videoController!.value.size.height, child: VideoPlayer(widget.videoController!)),
+                                  ),
+                                ),
+                              )
+                            : (widget.item.bannerImage.isNotEmpty
+                                  ? ClipRect(
+                                      child: SizedBox(
+                                        width: rect.width,
+                                        height: rect.height * 0.68,
+                                        child: Image.network(widget.item.bannerImage, fit: BoxFit.contain, width: double.infinity, height: double.infinity),
+                                      ),
+                                    )
+                                  : ClipRect(
+                                      child: SizedBox(
+                                        width: rect.width,
+                                        height: rect.height * 0.68,
+                                        child: Image.network(widget.item.thumbnail, fit: BoxFit.contain, width: double.infinity, height: double.infinity),
+                                      ),
+                                    )),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(radius),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.82),
+                                borderRadius: BorderRadius.circular(radius),
+                                border: Border.all(color: Colors.white12, width: 0.3),
+                              ),
+                              padding: const EdgeInsets.all(12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Action row
+                                  _buildActions(),
+                                  const SizedBox(height: 5),
+                                  // Metadata
+                                  _buildMetadata(),
+
+                                  // Genres
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -324,27 +259,27 @@ class _HoverCardContentState extends State<_HoverCardContent> with SingleTickerP
         fit: StackFit.expand,
         children: [
           // banner image
-          if (widget.item.bannerImage.isNotEmpty)
-            TweenAnimationBuilder<double>(
-              duration: const Duration(milliseconds: 800),
-              tween: Tween(begin: 0.0, end: 1.0),
-              builder: (context, v, child) => Transform.translate(offset: Offset(0, -6 * (1 - v)), child: child),
-              child: Image.network(widget.item.bannerImage, fit: BoxFit.cover),
-            ),
+          // if (widget.item.bannerImage.isNotEmpty)
+          //   TweenAnimationBuilder<double>(
+          //     duration: const Duration(milliseconds: 800),
+          //     tween: Tween(begin: 0.0, end: 1.0),
+          //     builder: (context, v, child) => Transform.translate(offset: Offset(0, -6 * (1 - v)), child: child),
+          //     child: Image.network(widget.item.bannerImage, fit: BoxFit.fitWidth),
+          //   ),
 
           // video preview with subtle parallax
-          if (video != null && video.value.isInitialized)
-            AnimatedOpacity(
-              opacity: 1.0,
-              duration: const Duration(milliseconds: 350),
-              child: Transform.translate(
-                offset: const Offset(0, -4),
-                child: FittedBox(
-                  fit: BoxFit.cover,
-                  child: SizedBox(width: video.value.size.width, height: video.value.size.height, child: VideoPlayer(video)),
-                ),
-              ),
-            ),
+          // if (video != null && video.value.isInitialized)
+          //   AnimatedOpacity(
+          //     opacity: 1.0,
+          //     duration: const Duration(milliseconds: 350),
+          //     child: Transform.translate(
+          //       offset: const Offset(0, -4),
+          //       child: FittedBox(
+          //         fit: BoxFit.cover,
+          //         child: SizedBox(width: video.value.size.width, height: video.value.size.height, child: VideoPlayer(video)),
+          //       ),
+          //     ),
+          //   ),
 
           // gradient overlay for readability
           Positioned(
